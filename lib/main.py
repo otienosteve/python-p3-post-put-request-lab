@@ -25,8 +25,8 @@ class EmployeeSchema(BaseModel):
 # 👍 🤔 😕 🤗 
 @app.post('/add_employee', status_code=201)
 def add_employee(payload: EmployeeSchema) -> None:
-    emp = session.query(Employee).filter_by(id=payload.id)
-    if emp is None:
+    emp = session.query(Employee).filter_by(id=payload.id).first()
+    if emp:
         raise HTTPException(status_code=401, detail='Employee Already Exists' )
     else:
         newemp = Employee(**dict(payload))

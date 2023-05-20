@@ -37,16 +37,12 @@ exist_data = {
 "salary": 521396,
 "designation": "Cook"
 }
+
 # Existing data Post setup teardown
 @pytest.fixture(scope='session')
 def exist_data_fix():
-    create = Employee(**dict(exist_data))
-    session.add(create)
-    session.commit()
     yield exist_data
-    emp = session.query(Employee).filter_by(id=707).first()
-    session.delete(emp)
-    session.commit()
+    
 
 # Post tests
 def test_post(Client, employee): 
