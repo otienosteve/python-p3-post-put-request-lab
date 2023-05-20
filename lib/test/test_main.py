@@ -37,6 +37,17 @@ exist_data = {
 "salary": 521396,
 "designation": "Cook"
 }
+update_data={
+"id": 110,
+"first_name": "Damian",
+"last_name": "Lighter",
+"email": "Dlighter@jigsy.com",
+"age": 18,
+"gender": "Male",
+"phone_number": 64654301273,
+"salary": 521391236,
+"designation": "Waiter"
+}
 
 # Existing data Post setup teardown
 @pytest.fixture(scope='session')
@@ -49,13 +60,10 @@ def exist_data_fix():
     session.delete(emp)
     session.commit()
    
-    
-
 # Post tests
 def test_post(Client, employee): 
     res = Client.post('/add_employee', headers={"content-type":"application/json"} ,json=employee)
     assert res.json() == employee
-   
     assert res.status_code == 201, 'Output Correct status Code {res.status_code}'
 
 # existing post data test
@@ -64,7 +72,20 @@ def test_existing_item(Client, exist_data_fix):
     assert res.json()== {"detail": "Employee Already Exists"}
     assert res.status_code == 401 , f'Failed to return status code'
 
+def test_put(Client):
+    res = Client.put('/employees/updateall/110', headers={"content-type":"applicatio/json", "accept":"application/json"}, json=update_data)
+    res.status_code == 200 , f'Updtae Unsuccessful'
+    data = session.query(Employee).filter_by(id=10).first()
+    assert data.first_name == 'Damian', f' Unexpected Value {data.first_name}'
+    assert data.last_name == 'Lighter', f' Unexpected Value {data.last_name}'
+    assert data.email == 'Dlighter@jigsy.com', f' Unexpected Value {data.email}'
+    assert data.age == 18, f' Unexpected Value {data.age}'
+    assert data.gender == 'Male', f' Unexpected Value {data.gender}'
+    assert data.phone_number == 64654301273, f' Unexpected Value {data.phone_number}'
+    assert data.designation == 'Waiter', f' Unexpected Value {data.designation}'
 
+
+    
 
 
 

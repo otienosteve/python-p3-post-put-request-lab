@@ -33,3 +33,13 @@ def add_employee(payload: EmployeeSchema) -> None:
         session.commit()
 
     return payload
+
+@app.put("/employees/updateall/{employee_id}", status_code=202)
+def update_all(payload: EmployeeSchema) ->EmployeeSchema:
+    emp = session.query(Employee).filter_by(id=payload.id).first()
+    for key, value in emp:
+        setattr(emp, key, value)
+    session.commit()
+
+
+
