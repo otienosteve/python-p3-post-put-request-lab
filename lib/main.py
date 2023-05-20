@@ -22,12 +22,15 @@ class EmployeeSchema(BaseModel):
 # def root() -> None: 
 #     return {'success' : "root"}
 
-# 👍 🤔 😕
+# 👍 🤔 😕 🤗 
 @app.post('/add_employee', status_code=201)
 def add_employee(payload: EmployeeSchema) -> None:
-    
-    emp = Employee(**dict(payload))
-    session.add(emp)
-    session.commit()
+    emp = session.query(Employee).filter_by(id=payload.id)
+    if emp is None:
+        raise HTTPException(status_code=401, detail='Employee Already Exists' )
+    else:
+        newemp = Employee(**dict(payload))
+        session.add(newemp)
+        session.commit()
 
     return payload
