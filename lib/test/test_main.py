@@ -4,7 +4,7 @@ from main import app
 from models.employee import session, Employee
 
 exist_data = {
-"id": 1,
+"id": 109,
 "first_name": "Cosmas",
 "last_name": "Light",
 "email": "Clight@jigsy.com",
@@ -57,8 +57,8 @@ def test_post(Client, employee):
     assert added, f"Post Operation unsuccessful" 
 
 def test_existing_item(Client):
-    res = Client.post('/',headers={'content-type':'application/json' ,'accept':'application/json'},json=exist_data)
-    assert res.status_code == 404
+    res = Client.post('/add_employee',headers={'content-type':'application/json' ,'accept':'application/json'},json=exist_data)
+    assert res.status_code == 400
     assert res.json() == {"detail" : "Employee Already Exists"}
 
 
