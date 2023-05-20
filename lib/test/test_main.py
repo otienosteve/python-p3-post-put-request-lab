@@ -80,11 +80,12 @@ def test_post(Client, employee):
 # existing post data test
 def test_existing_item(Client, exist_data_fix):
     res = Client.post('/add_employee',headers={'content-type':'application/json' ,'accept':'application/json'}, json=exist_data_fix)
-    assert res.json()== {"detail": "Employee Already Exists"}
+    assert res.json()== {"detail": "Employee already exists"}
     assert res.status_code == 401 , f'Failed to return status code'
 
+# Test Put Request
 def test_put(Client,put_data):
-    res = Client.put('/employees/updateall/110', headers={"content-type":"applicatio/json", "accept":"application/json"}, json=put_data)
+    res = Client.put('/employees/full_update/110', headers={"content-type":"applicatio/json", "accept":"application/json"}, json=put_data)
     res.status_code == 200 , f'Updtae Unsuccessful'
     data = session.query(Employee).filter_by(id=117).first()
     assert data.first_name == 'Damian', f' Unexpected Value {data.first_name}'
