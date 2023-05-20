@@ -38,7 +38,7 @@ exist_data = {
 "designation": "Cook"
 }
 update_data={
-"id": 110,
+"id": 117,
 "first_name": "Damian",
 "last_name": "Lighter",
 "email": "Dlighter@jigsy.com",
@@ -50,13 +50,24 @@ update_data={
 }
 
 # Existing data Post setup teardown
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='function')
 def exist_data_fix():
     create = Employee(**dict(exist_data))
     session.add(create)
     session.commit()
     yield exist_data
     emp = session.query(Employee).filter_by(id=110).first()
+    session.delete(emp)
+    session.commit()
+
+# Put request setup teardown
+@pytest.fixture(scope='function')
+def put_data():
+    create = Employee(**dict(update_data))
+    session.add(create)
+    session.commit()
+    yield update_data
+    emp = session.query(Employee).filter_by(id=117).first()
     session.delete(emp)
     session.commit()
    
@@ -72,10 +83,10 @@ def test_existing_item(Client, exist_data_fix):
     assert res.json()== {"detail": "Employee Already Exists"}
     assert res.status_code == 401 , f'Failed to return status code'
 
-def test_put(Client):
-    res = Client.put('/employees/updateall/110', headers={"content-type":"applicatio/json", "accept":"application/json"}, json=update_data)
+def test_put(Client,put_data):
+    res = Client.put('/employees/updateall/110', headers={"content-type":"applicatio/json", "accept":"application/json"}, json=put_data)
     res.status_code == 200 , f'Updtae Unsuccessful'
-    data = session.query(Employee).filter_by(id=10).first()
+    data = session.query(Employee).filter_by(id=117).first()
     assert data.first_name == 'Damian', f' Unexpected Value {data.first_name}'
     assert data.last_name == 'Lighter', f' Unexpected Value {data.last_name}'
     assert data.email == 'Dlighter@jigsy.com', f' Unexpected Value {data.email}'
