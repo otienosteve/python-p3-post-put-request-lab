@@ -49,10 +49,10 @@ Create a corresponding Pydantic class called `EmployeeSchema` for the model and 
 
 implement the following endpoints and the required functionality.
 
-- `POST /add_employee`: creates a new Employee Instance when supplied with an JSON Object of the employee data, It should also respond with the correct status code
+- `POST /add_employee`: creates a new Employee Instance when supplied with an JSON Object of the employee data, It should also respond with the appropriate status code
     - implement an exception handler for a non existent entry in the database which should yield the appropriate status code and the message "Employee already exists"
-- `PUT  '/employees/full_update/:id`: updates all the details of employee witht he corresponding id,
-it should respond with correct status code.
+- `PUT  '/employees/full_update/:id`: updates all the details of employee with the corresponding id,
+it should respond with appropriate status code.
 
 
 To run your server run `uvicorn lib.main:app` 
@@ -62,9 +62,8 @@ To test your solution run ` pytest `
 
 ## Resources 
 
-[Get Requests With FastAPI](https://betterprogramming.pub/how-to-create-a-get-request-in-fastapi-ecdc794b0cf)   
-[Validation With Pydantic](https://docs.pydantic.dev/latest/usage/validators/)  
+[POST  Requests With FastAPI](https://fastapi.tiangolo.com/tutorial/body/)   
+[PUT REquest With FastAPi](https://fastapi.tiangolo.com/tutorial/body-updates/)    
 [Error Handling in FastAPI](https://fastapi.tiangolo.com/tutorial/handling-errors/)    
-[Response Model - Return Type in FastAPI](https://fastapi.tiangolo.com/tutorial/response-model/)    
-[Path Parameters](https://fastapi.tiangolo.com/tutorial/path-params/)   
+ 
 
