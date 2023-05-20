@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from models.employee import session, Employee
@@ -23,7 +23,11 @@ def root() -> None:
 # 👍
 @app.post('/add_employee')
 def add_employee(payload: EmployeeSchema) -> EmployeeSchema:
-    emp = Employee(**dict(payload))
+    payload = dict(payload)
+    exist = session.query(Employee).filter_by(id=payload['id'])
+    if exist:
+        raise HTTPException(status_code=400, detail="Employee Already Exists")
+    emp = Employee(**payload)
     session.add(emp)
     session.commit()
 
