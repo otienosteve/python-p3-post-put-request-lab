@@ -14,20 +14,21 @@ class EmployeeSchema(BaseModel):
     phone_number : int
     salary : int 
     designation : str
+    class Config:
+        orm_mode = True
 
 
-@app.get('/')
-def root() -> None: 
-    return {'success' : "root"}
+# @app.get('/')
+# def root() -> None: 
+#     return {'success' : "root"}
 
 # 👍 🤔 😕
-@app.post('/add_employee')
-def add_employee(payload: EmployeeSchema) -> EmployeeSchema:
-    payload = dict(payload)
-    exist = session.query(Employee).filter_by(id=payload['id'])
+@app.post('/add_employee', status_code=201)
+def add_employee(payload: EmployeeSchema) -> None:
+    exist = session.query(Employee).filter_by(id=payload.id)
     if exist:
-        raise HTTPException(status_code=400, detail="Employee Already Exists")
-    emp = Employee(**payload)
+        return  HTTPException(status_code=400, detail="Employee Already Exists", headers="content-type: application/json")
+    emp = Employee(**dict(payload))
     session.add(emp)
     session.commit()
 

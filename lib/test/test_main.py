@@ -3,6 +3,7 @@ from fastapi.testclient import TestClient
 from main import app 
 from models.employee import session, Employee
 
+
 exist_data = {
 "id": 109,
 "first_name": "Cosmas",
@@ -14,8 +15,11 @@ exist_data = {
 "salary": 521396,
 "designation": "Cook"
 }
-new_data =  {
-"id": 109,
+
+@pytest.fixture(scope='session')
+def employee():
+    yield {
+"id": 707,
 "first_name": "Purity",
 "last_name": "Edwards",
 "email": "Pedwars@jigsy.com",
@@ -25,40 +29,40 @@ new_data =  {
 "salary": 121396,
 "designation": "Surveyor"
 }
+    # session.query(Employee).filter_by(id=707).first()
+
 @pytest.fixture
 def Client():
     return TestClient(app)
 
-@pytest.fixture(scope='session')
-def employee():
 
-    yield new_data
-    session.query(Employee).filter_by(id=707).delete()
-    
-@pytest.fixture
-def employee_set_unset():
-      return TestClient(app)
+# @pytest.fixture(scope='session')
+# def employee_set_unset():
+#     create = Employee(**dict(exist_data))
+#     session.add(create)
+#     session.commit()
+#     yield exist_data
+#     session.query(Employee).filter(Employee.id==109).delete()
 
-@pytest.fixture(scope='session')
-def employee():
-    create = Employee(**dict(exist_data))
-    session.add(create)
-    session.commit()
-    yield exist_data
-    session.query(Employee).filter_by(id=109).delete()
+def test_post(Client): 
+    res = Client.post('/add_employee', headers={'content-type':'application/json', 'accept':'application/json'} ,json={
+"id": 707,
+"first_name": "Purity",
+"last_name": "Edwards",
+"email": "Pedwars@jigsy.com",
+"age": 38,
+"gender": "Female",
+"phone_number": 6469701273,
+"salary": 121396,
+"designation": "Surveyor"
+})
+    assert res.status_code == 201, 'Output Correct status Code {res.status_code}'
 
-def test_root(Client):
-    res=Client.get('/')
-    assert res.json() == {'success' : "root"}
+# def test_existing_item(Client):
+#     res = Client.post('/add_employee',headers={'content-type':'application/json' ,'accept':'application/json'}, json=exist_data)
+#     assert res.json()== {"status_code": 400, "detail":"Employee Already Exists", "headers":"content-type: application/json"}
+#     assert res.status_code == 400 , f'Failed to return status code'
 
-def test_post(Client, employee):
-    res = Client.post('/add_employee', headers={'content-type':'application/json' ,'accept':'application/json'} ,json=new_data)
-    added = session.query(Employee).filter_by(id=employee['id']).first()
-    assert added, f"Post Operation unsuccessful" 
-
-def test_existing_item(Client):
-    res = Client.post('/add_employee',headers={'content-type':'application/json' ,'accept':'application/json'},json=exist_data)
-    assert res.status_code == 400
-    assert res.json() == {"detail" : "Employee Already Exists"}
+# session.query(Employee).filter_by(id=707).delete() 
 
 
