@@ -23,6 +23,7 @@ def employee():
 "salary": 121396,
 "designation": "Surveyor"
 }
+session.query(Employee).filter_by(id=707).delete()
     
 
 def test_root(Client):
@@ -33,5 +34,5 @@ def test_post(Client, employee):
     res = Client.post('/add_employee', headers={'content-type':'application/json' ,'accept':'application/json'} ,json=employee)
     added = session.query(Employee).filter_by(id=employee['id']).first()
     assert added, f"Post Operation unsuccessful" 
-    session.query(Employee).filter_by(id=707).delete()
+    
 

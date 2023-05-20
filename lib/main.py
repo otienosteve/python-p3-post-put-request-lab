@@ -20,7 +20,7 @@ class EmployeeSchema(BaseModel):
 def root() -> None: 
     return {'success' : "root"}
 
-
+# 👍
 @app.post('/add_employee')
 def add_employee(payload: EmployeeSchema) -> EmployeeSchema:
     emp = Employee(**dict(payload))
