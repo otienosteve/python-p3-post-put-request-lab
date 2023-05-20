@@ -21,8 +21,7 @@ class EmployeeSchema(BaseModel):
 # @app.get('/')
 # def root() -> None: 
 #     return {'success' : "root"}
-
-# 👍 🤔 😕 🤗 
+# 👍 🤔 😕 🤗 ✍️
 @app.post('/add_employee', status_code=201)
 def add_employee(payload: EmployeeSchema) -> None:
     emp = session.query(Employee).filter_by(id=payload.id).first()

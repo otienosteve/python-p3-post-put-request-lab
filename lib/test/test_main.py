@@ -41,7 +41,14 @@ exist_data = {
 # Existing data Post setup teardown
 @pytest.fixture(scope='session')
 def exist_data_fix():
+    create = Employee(**dict(exist_data))
+    session.add(create)
+    session.commit()
     yield exist_data
+    emp = session.query(Employee).filter_by(id=110).first()
+    session.delete(emp)
+    session.commit()
+   
     
 
 # Post tests
@@ -56,6 +63,7 @@ def test_existing_item(Client, exist_data_fix):
     res = Client.post('/add_employee',headers={'content-type':'application/json' ,'accept':'application/json'}, json=exist_data_fix)
     assert res.json()== {"detail": "Employee Already Exists"}
     assert res.status_code == 401 , f'Failed to return status code'
+
 
 
 
