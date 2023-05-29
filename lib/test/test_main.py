@@ -1,7 +1,7 @@
 import pytest 
 from fastapi.testclient import TestClient
 from main import app 
-from models.employee import session, Employee
+from employee import session, Employee
 
 # create client instance
 @pytest.fixture

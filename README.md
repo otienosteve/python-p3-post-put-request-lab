@@ -50,7 +50,7 @@ Create a corresponding Pydantic class called `EmployeeSchema` for the model and 
 implement the following endpoints and the required functionality.
 
 - `POST /add_employee`: creates a new Employee Instance when supplied with an JSON Object of the employee data, It should also respond with the appropriate status code
-    - implement an exception handler for a non existent entry in the database which should yield the appropriate status code and the message "Employee already exists"
+    - implement an error handler for a non existent entry in the database which should yield the appropriate status code and the message "Employee already exists"
 - `PUT  '/employees/full_update/:id`: updates all the details of employee with the corresponding id,
 it should respond with appropriate status code.
 
