@@ -11,23 +11,18 @@ Here's the directory structure for our application
 ```
 ├── alembic
 ├── lib
-│   ├── models
-│   │   ├── employee.py
 │   ├── test
 |   |   |──test_main.py
 |   |   |
+│   │── employee.py
 │   ├── main.py
-├── db.db
 ├── Pipfile
 ├── Pipfile.lock
 |── README.md
 
 ```
 Similar to the Previous GET Lab you will be working with data concerning Employees
-The Employee Model has been created and is available  in the models directory under the lib folder, data to work on this lab is available in the database file (db.db). 
-Your focus should be on implementing the routes and the associated functionality.
-
-As with the GET lab import the Employee Model from the models package and make use of them when implementing your solution.   
+The Employee Model has been created and is available  in the models directory under the lib folder, ceate and run your migrations.  
 
 Inside the lib folder you will find a file `main.py` where you are expected to write your solution. 
 
@@ -44,10 +39,15 @@ phone_number -> Integer
 salary -> Integer
 designation -> String
 ```
-Create a corresponding Pydantic class called `EmployeeSchema` for the model and use it to annotate your endpoints as per the return type.
+Create a corresponding Pydantic class called `EmployeeSchema` for the model and use it to annotate your endpoints as per the return type.   
+Add validation to your employee fields as follows. 
+`last_name and first_name should include at least 2 characters` 
+`email should be valid` 
+`Gender should be Male or Female`   
+`Age should be greater than 18`  
+`Salary should be between 30,000 - 200,000` 
 
-
-implement the following endpoints and the required functionality.
+Implement the following endpoints and the required functionality.
 
 - `POST /add_employee`: creates a new Employee Instance when supplied with an JSON Object of the employee data, It should also respond with the appropriate status code
     - implement an error handler for a non existent entry in the database which should yield the appropriate status code and the message "Employee already exists"
